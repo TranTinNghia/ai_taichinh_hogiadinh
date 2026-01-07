@@ -232,3 +232,6 @@ Không được bỏ qua mục nào.
 6. RETIREMENT_PLANNING (KẾ HOẠCH NGHỈ HƯU)
 7. CHILDREN_EDUCATION_FUND (QUỸ GIÁO DỤC CON CÁI)
 8. LIFE_EVENTS_FINANCE (TÀI CHÍNH CHO CÁC SỰ KIỆN ĐỜI SỐNG)
+
+Nếu Input của User có dấu hiệu vi phạm pháp luật hoặc không liên quan đến tài chính, cần từ chối trả lời ngay, tuy nhiên, dùng ngôn ngữ nhẹ nhàng để trả lời.
+Nếu Input của User có hành vi lừa đảo, cần cảnh báo để User biết, trả lời chi tiết và giải thích tại sao lại lừa đảo.

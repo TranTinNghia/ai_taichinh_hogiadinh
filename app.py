@@ -51,12 +51,28 @@ def load_system_prompt():
     with open(prompt_file, "r", encoding="utf-8") as f:
         return f.read()
 
+def clean_markdown(text):
+    import re
+    text = re.sub(r'\*\*([^*]+)\*\*', r'\1', text)
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)
+    text = re.sub(r'#+\s*', '', text)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    text = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', text)
+    text = re.sub(r'_{2,}', '', text)
+    text = re.sub(r'~{2,}', '', text)
+    return text.strip()
+
 def call_gemini_api(user_prompt):
     api_key = yaml_collection.get_lm_api_key()
     base_url = yaml_collection.get_lm_base_url()
     model = yaml_collection.get_lm_model()
     
-    url = f"{base_url}/{model}"
+    if ":" in model:
+        model_name = model.split(":")[0]
+    else:
+        model_name = model
+    
+    url = f"{base_url}/{model_name}:generateContent"
     
     system_prompt = load_system_prompt()
     
@@ -77,16 +93,35 @@ def call_gemini_api(user_prompt):
         "key": api_key
     }
     
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
     try:
-        response = requests.post(url, json=payload, params=params)
+        response = requests.post(url, json=payload, params=params, headers=headers)
+        
+        if response.status_code == 403:
+            error_detail = response.text
+            if "API key not valid" in error_detail or "permission" in error_detail.lower():
+                return f"Lỗi: API key không hợp lệ hoặc không có quyền truy cập model '{model_name}'. Vui lòng kiểm tra lại API key trong Google Cloud Console."
+            elif "location" in error_detail.lower() or "region" in error_detail.lower():
+                return f"Lỗi: Vị trí địa lý không được hỗ trợ hoặc model '{model_name}' không khả dụng. Thử đổi model khác như 'gemini-1.5-pro' hoặc 'gemini-1.5-flash'."
+            else:
+                return f"Lỗi 403: {error_detail[:200]}"
+        
         response.raise_for_status()
         data = response.json()
         
         if "candidates" in data and len(data["candidates"]) > 0:
             ai_response = data["candidates"][0]["content"]["parts"][0]["text"]
-            return ai_response
+            cleaned_response = clean_markdown(ai_response)
+            return cleaned_response
         else:
             return "Không thể nhận được phản hồi từ AI."
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 403:
+            return f"Lỗi 403: API key không có quyền hoặc model '{model_name}' không khả dụng. Vui lòng kiểm tra lại."
+        return f"Lỗi HTTP {e.response.status_code}: {str(e)}"
     except Exception as e:
         return f"Lỗi khi gọi API: {str(e)}"
 

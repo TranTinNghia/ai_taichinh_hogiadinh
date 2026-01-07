@@ -1,0 +1,17 @@
+Đang khởi động Backend...
+Backend đã khởi động (PID: 594443)
+Đang khởi động Frontend...
+Frontend đã khởi động (PID: 594465)
+
+==========================================
+Ứng dụng đã khởi động thành công!
+Backend: http://100.91.247.70:5000
+Frontend: http://100.91.247.70:3000
+==========================================
+
+Logs được lưu tại:
+  - Backend: logs/backend.log
+  - Frontend: logs/frontend.log
+
+Nhấn Ctrl+C để dừng tất cả services
+

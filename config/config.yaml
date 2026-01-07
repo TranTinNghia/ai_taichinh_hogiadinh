@@ -5,7 +5,7 @@ database:
   password: "%TTn120897%"
 
 lm:
-  api_key: "AIzaSyD5dQZcA2-6_tVN1V7WBAzFkU5kGZ0Pa7o"
+  api_key: "AIzaSyBlYxw7pMDgeaM5dem43-TBP5mHp33HltY"
   base_url: "https://generativelanguage.googleapis.com/v1beta/models"
   model: "gemini-3-flash-preview:generateContent"
   system_prompt: "system_prompt.txt"

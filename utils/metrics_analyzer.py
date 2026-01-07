@@ -12,16 +12,70 @@ class MetricsAnalyzer:
         pass
     
     def _check_disadvantage(self, prompt: str) -> bool:
-        disadvantage_keywords = [
-            "thu nhập thấp", "nghèo", "khó khăn", "bệnh tật", "sức khỏe",
-            "học vấn thấp", "trình độ", "phụ thuộc", "người già", "trẻ em",
-            "nông thôn", "vùng xa", "nợ", "không có dự phòng"
+        prompt_lower = prompt.lower()
+        
+        financial_pressure = [
+            "thu nhập thấp", "thu nhập ít", "lương thấp", "nghèo", "khó khăn tài chính",
+            "chi tiêu nhiều hơn thu nhập", "chi nhiều hơn thu", "âm", "thiếu hụt",
+            "đang có nợ", "có nợ", "vay nợ", "nợ ngân hàng", "nợ tín dụng",
+            "không có dự phòng", "không có tiết kiệm", "không có quỹ khẩn cấp",
+            "không tham gia an sinh xã hội", "không có bảo hiểm xã hội"
         ]
         
-        prompt_lower = prompt.lower()
-        for keyword in disadvantage_keywords:
-            if keyword in prompt_lower:
-                return True
+        health_limitation = [
+            "bệnh tật", "bệnh", "ốm", "sức khỏe", "sức khoẻ", "bệnh mãn tính",
+            "cần chăm sóc sức khỏe", "chăm sóc sức khoẻ", "điều trị", "thuốc men"
+        ]
+        
+        information_capacity = [
+            "học vấn thấp", "trình độ thấp", "ít học", "không biết", "không hiểu",
+            "hiểu biết hạn chế", "nhận thức kém", "trình độ học vấn thấp",
+            "tiểu học", "trung học cơ sở", "chưa tốt nghiệp"
+        ]
+        
+        family_dependency = [
+            "có người phụ thuộc", "phụ thuộc", "nuôi con", "nuôi gia đình",
+            "độc thân", "ly hôn", "ly dị", "goá", "goá", "một mình nuôi con"
+        ]
+        
+        psychological = [
+            "thích tiêu xài", "tiêu xài", "chi tiêu nhiều", "không tiết kiệm",
+            "không có ý chí phấn đấu", "lười", "ỷ lại", "dựa dẫm",
+            "cha mẹ giàu", "gia đình giàu", "quen biết nhiều"
+        ]
+        
+        job_stability = [
+            "thất nghiệp", "không có việc", "mất việc", "công việc không ổn định",
+            "làm việc tạm thời", "hợp đồng ngắn hạn", "công việc bấp bênh"
+        ]
+        
+        age = [
+            "người già", "cao tuổi", "người lớn tuổi", "trên 60", "trên 65",
+            "trẻ em", "trẻ nhỏ", "dưới 18", "học sinh", "sinh viên"
+        ]
+        
+        geographic_barrier = [
+            "nông thôn", "vùng xa", "vùng sâu", "vùng xa xôi", "hẻo lánh",
+            "không có internet", "hạ tầng kém", "điều kiện tiếp cận khó",
+            "xa trung tâm", "tỉnh lẻ"
+        ]
+        
+        all_groups = [
+            financial_pressure,
+            health_limitation,
+            information_capacity,
+            family_dependency,
+            psychological,
+            job_stability,
+            age,
+            geographic_barrier
+        ]
+        
+        for group in all_groups:
+            for keyword in group:
+                if keyword in prompt_lower:
+                    return True
+        
         return False
     
     def analyze(self, user_prompt: str, ai_response: str) -> Dict:

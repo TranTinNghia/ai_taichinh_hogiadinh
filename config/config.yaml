@@ -1,0 +1,11 @@
+database:
+  url: "jdbc:sqlserver://100.91.247.70:1433;databaseName=uit;encrypt=true;trustServerCertificate=true;"
+  driver: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  user: "sa"
+  password: "%TTn120897%"
+
+lm:
+  api_key: "AIzaSyD5dQZcA2-6_tVN1V7WBAzFkU5kGZ0Pa7o"
+  base_url: "https://generativelanguage.googleapis.com/v1beta/models"
+  model: "gemini-3-flash-preview:generateContent"
+  system_prompt: "system_prompt.txt"

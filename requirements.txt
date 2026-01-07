@@ -1,0 +1,5 @@
+pyodbc
+pymssql
+flask
+flask-cors
+requests
